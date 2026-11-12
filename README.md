@@ -1,146 +1,94 @@
-# PoMoment (React Native + Expo)
+# PoMoment ⏱️
 
- PoMoment는 Pomodoro 스타일의 **집중/휴식 타이머 세션**을 실행하고, 세션 결과를 **히스토리** 로 저장·조회할 수 있는 학습 타이머 앱입니다.
+**JavaScript · React Native · Expo · Firebase · AsyncStorage**  
+**개인 프로젝트 | 모바일 앱 기획·개발·테스트**
 
-탭은 **홈 / 히스토리 / 친구 / 설정** 4개로 구성되어 있으며, 홈에서 세션을 시작해 타이머를 실행하고 세션을 저장하면, 이를 히스토리에서 확인할 수 있습니다.
+PoMoment는 **포모도로(Pomodoro) 기법을 활용한 학습 기록 및 공유 앱**입니다. 사용자가 집중·휴식 시간을 설정해 공부하고, 세션별 기록을 확인하며, 친구의 주간 학습 현황도 살펴볼 수 있도록 구현했습니다.
 
-자세한 유저플로우/화면 설명/특징점/자랑거리는 별도로 제출한 설명서(pdf)에 포함하여 적어두었습니다.
+## 📱 주요 기능 및 실행 화면
 
+### 1. 홈 / 학습 세션 설정
+25분 집중·5분 휴식, 50분 집중·10분 휴식 프리셋과 사용자 지정 시간을 제공합니다. 공부할 과목과 집중·휴식 시간을 설정한 뒤 세션을 시작할 수 있습니다.
 
----
+![홈 화면과 세션 설정](docs/screenshots/01_home_setup.png)
 
+### 2. 집중 / 휴식 타이머
+집중(FOCUS)과 휴식(REST) 모드를 전환하며, 진행 중인 타이머를 일시정지하거나 재개할 수 있습니다. 세션 종료 시 학습 기록을 저장합니다.
 
-## 주요 기능 (간략한 소개)
-- **Pomodoro 타이머 (집중/휴식)**  
-  집중(FOCUS)과 휴식(REST)을 기반으로 세션을 진행하는 타이머 기능입니다.  
-  남은 시간과 모드가 화면에 표시되며, **일시정지/재개**가 가능합니다.  
-  세션 종료 시 기록을 저장하고, 저장 완료 후 히스토리에서 확인할 수 있습니다.
-- **공부 기록 조회 (날짜/세션별)**  
-  저장된 공부 세션 기록을 **날짜/세션 단위**로 조회할 수 있습니다.  
-  공부한 과목명, 공부 시간(집중/휴식) 등 세션 요약 정보가 함께 제공됩니다.
-- **친구 추가 & 주간 요약 조회**  
-  친구를 추가하고, 친구의 프로필 및 주간 단위의 공부 기록 요약을 확인할 수 있습니다.  
-  이를 통해 개인 기록뿐 아니라 친구의 학습 현황도 함께 참고할 수 있습니다.
-- **설정 및 프로필**  
-  타이머 전환 알림에 사용되는 **사운드/진동 옵션**을 설정할 수 있습니다.  
-  설정값은 저장되며 이후 타이머 동작에 반영됩니다.
-  프로필 정보, 즉 이름과 상태 메시지 또한 설정 화면에서 관리합니다.
+![집중 및 휴식 타이머](docs/screenshots/02_focus_rest.png)
 
+### 3. 학습 기록 조회
+AsyncStorage에 학습 세션을 저장하고 날짜별·세션별로 공부한 과목과 집중·휴식 시간을 조회하도록 구현했습니다.
 
----
+![히스토리 화면](docs/screenshots/03_history.png)
 
+### 4. 친구 / 학습 현황 공유
+친구 ID를 통한 추가와 프로필·주간 학습 현황 조회를 위한 화면 및 Firestore 연동 코드를 구현했습니다.
 
-## 실행 방법 (iOS / Android, Expo Go)
+![친구 화면과 주간 학습 현황](docs/screenshots/04_friends.png)
 
-### 1) 기본 실행 (권장)
+## 🛠 기술 스택
 
-프로젝트 루트에서 아래 명령으로 실행합니다.
+| 영역 | 사용 기술 | 구현 내용 |
+|---|---|---|
+| 언어·모바일 | JavaScript, React Native, Expo | 화면과 사용자 인터랙션 구현 |
+| 화면 전환 | React Navigation (Native Stack, Bottom Tabs) | 홈·히스토리·친구·설정 탭 및 타이머 화면 전환 |
+| 로컬 저장 | AsyncStorage | 학습 세션 및 앱 설정 저장·조회 |
+| 클라우드 | Firebase Authentication (Anonymous), Firestore | 사용자 식별 및 친구·학습 기록 관리 관련 로직 |
+| 기타 | React Native Calendars, Expo Haptics, Expo AV | 달력형 기록 UI, 진동 및 알림음 |
+
+> 별도 백엔드 REST API 서버를 개발한 프로젝트가 아니라, React Native 앱에서 로컬 저장소와 Firebase SDK를 활용한 프로젝트입니다.
+
+## 🔄 데이터 흐름
+
+1. **Create:** 과목과 집중·휴식 시간을 설정하고 학습 세션을 진행합니다.
+2. **Save:** 세션 종료 시 기록을 생성해 AsyncStorage에 저장하며, Firestore를 활용한 클라우드 저장 로직을 구성했습니다.
+3. **Share:** Firebase 사용자 식별 정보와 Firestore를 활용해 친구의 학습 기록을 조회하도록 설계했습니다.
+
+코드는 화면, 데이터 저장, Firebase 연동 등 역할별로 분리했습니다.
+
+```text
+App.js                 # 앱 내비게이션 구성
+src/
+├── screens/            # Home / Setup / Timer / History / Friends / Settings
+├── components/         # 공통 UI 컴포넌트
+├── storage/            # 학습 기록 및 사용자 관련 데이터 처리
+├── firebase/           # Firebase 설정·인증 관련 로직
+├── theme/              # 공통 색상·타이포그래피
+└── utils/              # 시간 관련 공통 함수
+assets/                 # 이미지·알림음
+```
+
+## 💡 문제 해결: 화면 전환 시 Safe Area가 어긋나는 현상
+
+**문제**  
+타이머를 종료하고 다른 화면으로 이동할 때, 노치 또는 Dynamic Island가 있는 기기에서 상단 헤더가 상태바에 가려지는 현상이 발생했습니다.
+
+**원인 분석 및 조치**  
+기존 탭 내부에 있던 타이머 화면을 `TabNavigator`에서 분리하고, `RootStack`에 배치하도록 내비게이션 계층을 수정했습니다. 앱 최상단에는 `SafeAreaProvider`를 적용했습니다.
+
+**결과**  
+화면을 전환한 후에도 상단 헤더와 레이아웃이 안정적으로 표시되도록 개선했습니다.
+
+> 관련 코드: [`App.js`](App.js) — `RootStack.Navigator`, `Tabs`, `Timer` 구성
+
+## ▶ 실행 방법
+
+Node.js/npm과 iOS·Android의 Expo Go가 필요합니다.
 
 ```bash
+npm install
 npx expo start -c
 ```
 
-### 2) 네트워크 환경상 로컬 연결이 불안정할 때 (대안)
-
-학교/회사망 등 환경에 따라 LAN 연결이 원활하지 않을 수 있으므로, 필요할 경우에는 터널 모드로 실행합니다.
+개발 기기와 휴대폰이 같은 네트워크에 연결되어 있어야 합니다. 로컬 연결이 어려우면 아래 방식도 시도할 수 있습니다.
 
 ```bash
 npx expo start -c --tunnel
 ```
 
-### 3) 기기에서 실행 (iOS/Android)
+> Firebase 관련 기능은 프로젝트의 인증·Firestore 설정 및 보안 규칙이 필요할 수 있습니다. 본 저장소를 그대로 실행할 때에는 해당 환경 구성이 맞는지 확인해야 합니다.
 
-1. iPhone/Android 기기에 Expo Go 앱을 설치합니다.
+## 🙋 담당 범위
 
-2. 실행 후 터미널에 표시되는 QR 코드를 스캔하여 앱을 실행합니다.
-
-
----
-
-
-## 제출 파일 구조
-
-myapp1214/
-├── App.js                 # 앱 엔트리 포인트
-├── assets/                # 리소스
-│   ├── beep.mp3
-│   └── logo2.png
-└── src/                  		# 소스 코드의 메인 디렉토리
-    ├── screens/     	      # 각 화면 컴포넌트
-    │   ├── HomeScreen.js
-    │   ├── SetupScreen.js
-    │   ├── TimerScreen.js
-    │   ├── HistoryScreen.js
-    │   ├── FriendsScreen.js
-    │   ├── FriendDetailScreen.js
-    │   └── SettingsScreen.js
-    ├── components/       	 # 공통 UI 컴포넌트
-    │   └── PrimaryButton.js
-    ├── firebase/         	 # Firebase 설정 및 초기화
-    │   └── firebase.js
-    ├── storage/          	 # 데이터 상태 관리
-    │   ├── sessionStore.js
-    │   └── userStore.js
-    ├── theme/            	 # 공통 스타일 관리
-    │   ├── colors.js
-    │   └── typography.js
-    └── utils/           		 # 공통 utility 함수 설정
-        └── time.js
-   
-
----
-
-
-## 설치해야 하는 패키지 목록 (dependencies)
-
-### Core
-- `expo` `~54.0.29`
-- `react` `19.1.0`
-- `react-native` `0.81.5`
-
-### Navigation / 화면 구성
-- `@react-navigation/native` `^7.1.25`
-- `@react-navigation/native-stack` `^7.8.6`
-- `@react-navigation/bottom-tabs` `^7.8.12`
-- `react-native-screens` `~4.16.0`
-- `react-native-safe-area-context` `~5.6.0`
-
-### Expo 모듈
-- `expo-status-bar` `~3.0.9`
-- `expo-av` `~16.0.8` (사운드)
-- `expo-haptics` `~15.0.8` (진동/햅틱)
-- `expo-keep-awake` `~15.0.8` (화면 꺼짐 방지)
-- `expo-clipboard` `~8.0.8`
-- `@expo/vector-icons` `^15.0.3`
-
-### 저장소 / 데이터
-- `@react-native-async-storage/async-storage` `2.2.0`
-- `firebase` `^12.6.0`
-
-### UI 컴포넌트
-- `react-native-calendars` `^1.1313.0`
-
-
-
-### 패키치 설치 명령어(제출물에 따로 package.json을 포함하였음)
-
-
-```bash
-# Navigation
-npm install @react-navigation/native @react-navigation/native-stack @react-navigation/bottom-tabs
-npx expo install react-native-screens react-native-safe-area-context
-
-# Local storage / UI
-npx expo install @react-native-async-storage/async-storage
-npm install react-native-calendars
-
-# Expo modules
-npx expo install expo-status-bar expo-clipboard expo-av expo-haptics expo-keep-awake
-
-# Icons
-npx expo install @expo/vector-icons
-
-# Firebase
-npm install firebase
-```
-
+개인 프로젝트로 **기획, UI 구현, 타이머 및 기록 기능 개발, 로컬·클라우드 데이터 연동 코드 작성, 테스트**를 수행했습니다.
