@@ -9,7 +9,7 @@ PoMoment는 사용자가 집중 시간과 휴식 시간을 설정해 학습 세�
 
 ## 2. 담당 역할
 
-**개인 프로젝트로 기획부터 개발 및 테스트까지 단독 수행했습니다.**
+**개인 프로젝트로 기획부터 개발 및 테스트까지 단독 수행**
 
 - React Native·Expo 기반 앱 화면 및 내비게이션 구현
 - 포모도로 타이머와 학습 세션 생성·저장·조회 기능 개발
@@ -69,7 +69,7 @@ PoMoment는 사용자가 집중 시간과 휴식 시간을 설정해 학습 세�
 - [`src/storage/userStore.js`](src/storage/userStore.js) — 사용자·친구 데이터 관리 로직
 - [`src/firebase/firebase.js`](src/firebase/firebase.js) — Firebase 설정 및 인증 관련 코드
 
-> 별도 REST API 서버를 구축한 프로젝트가 아니라 React Native에서 AsyncStorage 및 Firebase SDK를 활용한 모바일 앱입니다.
+> React Native에서 AsyncStorage 및 Firebase SDK를 활용한 모바일 앱
 
 ## 6. 문제 해결 및 개선
 
@@ -106,6 +106,6 @@ npm install
 npx expo start -c
 ```
 
-모바일 기기에서 Expo Go로 실행할 수 있으며, 필요한 경우 `npx expo start -c --tunnel`을 이용할 수 있습니다. Firebase 기반 기능은 프로젝트에 맞는 인증·Firestore 설정과 보안 규칙이 필요합니다.
+모바일 기기에서 Expo Go로 실행할 수 있으며 필요한 경우 `npx expo start -c --tunnel`을 이용할 수 있습니다. Firebase 기반 기능은 프로젝트에 맞는 인증·Firestore 설정과 보안 규칙이 필요합니다.
 
 본 README의 이미지는 프로젝트 시연 화면을 정리한 것입니다.
